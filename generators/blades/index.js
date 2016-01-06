@@ -12,9 +12,9 @@ var BladeBase = yeoman.Base.extend({
         var that = this;
         this.fetch(
             'https://raw.githubusercontent.com/flovalence/sk-blade-' + this.appname + '/master/templates/main.ejs',
-            dest.templates,
+            that.config.get('templatesDir') + '/' + this.appname,
             function (err) {
-                that.log(err);
+                if (err) that.log(err);
                 that.log('Template : ' + that.appname + ' has been loaded');
             }
         );
@@ -24,9 +24,9 @@ var BladeBase = yeoman.Base.extend({
         var that = this;
         this.fetch(
             'https://raw.githubusercontent.com/flovalence/sk-blade-' + this.appname + '/master/sk-reference.json',
-            dest.reference, 
+            that.config.get('referenceDir') + '/reference-' + this.appname,
             function (err) {
-                that.log(err);
+                if (err) that.log(err);
                 that.log('Reference : ' + that.appname + ' has been loaded');
         });
     }
@@ -42,6 +42,12 @@ module.exports = BladeBase.extend({
 
         console.log(this.appname);
 
+    },
+
+    config: function() {
+        if (this.config.get('isConfigured')) return;
+        this.config.set('templatesDir', 'myApp/templates');
+        this.config.set('referenceDir', 'myApp/templates/reference');
     },
 
     createBladeFiles: function () {
